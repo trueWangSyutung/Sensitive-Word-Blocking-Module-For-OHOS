@@ -1,10 +1,10 @@
 {
   "name": "sensitiveinput",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Please describe the basic information.",
   "main": "Index.ets",
   "author": "syutung",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "packageType": "InterfaceHar",
   "dependencies": {
   }

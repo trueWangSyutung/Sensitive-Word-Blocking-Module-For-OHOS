@@ -10,3 +10,7 @@
 /.clang-tidy
 **/.test
 /.appanalyzer
+my
+my.pub
+your-keypath
+your-keypath.pub
