@@ -1,4 +1,5 @@
-_# 敏感词检测输入框组件
+```markdown
+# 敏感词检测输入框组件
 
 一个专为鸿蒙OS Next研发的敏感词检测输入框组件。A sensitive word detection TextInput component developed specifically for HarmonyOS Next.
 
@@ -25,7 +26,7 @@ _# 敏感词检测输入框组件
 json
 {
 "dependencies": {
-"sensitiveinput": "file:../sensitiveinput"
+"@syutung/sensitiveinput": "@syutung/sensitiveinput:last"
 }
 }
 ```
@@ -101,41 +102,41 @@ STRICT    // 严格模式 - 检测所有类型的敏感词
 各模式对应的敏感词类型：
 
 1. **DEFAULT 模式**:
-  - `"gun"` (枪支)
-  - `"sex"` (色情)
-  - `"ads"` (广告)
-  - `"reactionary"` (反动)
-  - `"violent"` (暴力)
+   - `"gun"` (枪支)
+   - `"sex"` (色情)
+   - `"ads"` (广告)
+   - `"reactionary"` (反动)
+   - `"violent"` (暴力)
 
 2. **MEDIUM 模式**:
-  - `"livelihood"` (民生)
-  - `"gun"` (枪支)
-  - `"sex"` (色情)
-  - `"ads"` (广告)
-  - `"reactionary"` (反动)
-  - `"violent"` (暴力)
-  - `"policy"` (政策)
-  - `"more"` (其他)
-  - `"url"` (网址)
-  - `"other"` (其他)
-  - `"covid"` (疫情)
-  - `"corruption"` (腐败)
+   - `"livelihood"` (民生)
+   - `"gun"` (枪支)
+   - `"sex"` (色情)
+   - `"ads"` (广告)
+   - `"reactionary"` (反动)
+   - `"violent"` (暴力)
+   - `"policy"` (政策)
+   - `"more"` (其他)
+   - `"url"` (网址)
+   - `"other"` (其他)
+   - `"covid"` (疫情)
+   - `"corruption"` (腐败)
 
 3. **STRICT 模式**:
-  - `"livelihood"` (民生)
-  - `"tencent"` (腾讯相关)
-  - `"gun"` (枪支)
-  - `"sex"` (色情)
-  - `"ads"` (广告)
-  - `"reactionary"` (反动)
-  - `"violent"` (暴力)
-  - `"policy"` (政策)
-  - `"more"` (其他)
-  - `"url"` (网址)
-  - `"other"` (其他)
-  - `"covid"` (疫情)
-  - `"corruption"` (腐败)
-  - `"net"` (网络相关)
+   - `"livelihood"` (民生)
+   - `"tencent"` (腾讯敏感词相关)
+   - `"gun"` (枪支)
+   - `"sex"` (色情)
+   - `"ads"` (广告)
+   - `"reactionary"` (反动)
+   - `"violent"` (暴力)
+   - `"policy"` (政策)
+   - `"more"` (其他)
+   - `"url"` (网址)
+   - `"other"` (其他)
+   - `"covid"` (疫情)
+   - `"corruption"` (腐败)
+   - `"net"` (网易敏感词相关)
 
 #### 链式方法 / Chainable Methods
 
@@ -268,51 +269,26 @@ radius: 8
 
 ## 🧪 敏感词数据 / Sensitive Word Data
 
-敏感词数据存储在以下两个文件中：
+本项目使用的敏感词数据来源于 [konsheng/Sensitive-lexicon](https://github.com/konsheng/Sensitive-lexicon) 仓库，包含各类敏感词超过20000个，涵盖以下类型：
 
-### types.json - 敏感词类型定义
-```
-json
-[
-"livelihood",
-"tencent",
-"gun",
-"sex",
-"ads",
-"reactionary",
-"violent",
-"policy",
-"more",
-"url",
-"other",
-"covid",
-"corruption",
-"net"
-]
-```
-### vocabulary.json - 敏感词词汇表
-```
-json
-[
-{
-"type": "livelihood",
-"words": [
-"打人",
-"拆迁",
-"纠纷",
-"盗窃"
-]
-},
-{
-"type": "tencent",
-"words": [
-"微信",
-"QQ",
-"腾讯"
-]
-}
-]
-```
+### 敏感词类型
+- 民生类 (livelihood)
+- 腾讯敏感词相关 (tencent)
+- 枪支类 (gun)
+- 色情类 (sex)
+- 广告类 (ads)
+- 反动类 (reactionary)
+- 暴力类 (violent)
+- 政策类 (policy)
+- 其他类 (more)
+- 网址类 (url)
+- 其他 (other)
+- 疫情类 (covid)
+- 腐败类 (corruption)
+- 网易敏感词相关 (net)
+
+敏感词数据持续更新，确保覆盖最新的敏感内容。
+
 ## 🎯 高级配置 / Advanced Configuration
 
 ### 性能优化建议
@@ -352,13 +328,16 @@ fontSize: 16,
 
 ## 📄 许可证 / License
 
-本项目基于 [Apache-2.0 License](LICENSE) 开源协议。
+本项目基于 [MIT LICENSE](LICENSE) 开源协议。
+
+敏感词数据来源于 [konsheng/Sensitive-lexicon](https://github.com/konsheng/Sensitive-lexicon)，遵循其相应的许可协议。
 
 ## 🔗 相关链接 / Links
 
 - [HarmonyOS 官网](https://www.harmonyos.com/)
 - [ArkTS 开发指南](https://developer.harmonyos.com/cn/docs/documentation/doc-guides-V3/arkts-get-started-0000001504769321-V3)
 - [TypeScript 官网](https://www.typescriptlang.org/)
+- [Sensitive Lexicon 仓库](https://github.com/konsheng/Sensitive-lexicon)
 
 ## ⭐ 支持项目 / Support
 
