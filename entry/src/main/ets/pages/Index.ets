@@ -1,4 +1,4 @@
-import {SensitiveTextInput, SensitiveWordMode} from "sensitiveinput"
+import {SensitiveTextInput, SensitiveWordMode} from "@syutung/sensitiveinput"
 
 @Entry
 @Component

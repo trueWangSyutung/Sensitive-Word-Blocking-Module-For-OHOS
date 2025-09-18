@@ -6,7 +6,8 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "sensitiveinput": "file:../sensitiveinput"
+    "@syutung/sensitiveinput": "file:../sensitiveinput",
+
   }
 }
 
