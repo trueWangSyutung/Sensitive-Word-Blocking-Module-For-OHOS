@@ -1,4 +1,4 @@
-import {SensitiveTextInput, SensitiveWordMode} from "@syutung/sensitiveinput"
+import { SensitiveMultiLineTextInput, SensitiveTextInput, SensitiveWordMode} from "@syutung/sensitiveinput"
 
 @Entry
 @Component
@@ -22,7 +22,7 @@ struct Index {
             this.message = 'Welcome';
           })
 
-      // 共产党是家人
+
         SensitiveTextInput({
           mode: SensitiveWordMode.DEFAULT,
           placeholder: '请输入文本，系统将自动检测敏感词...',
@@ -39,8 +39,22 @@ struct Index {
           fontSize: 16,
         }).width('80%').height(40)
 
+        SensitiveMultiLineTextInput({
+          mode: SensitiveWordMode.DEFAULT,
+          placeholder: '请输入多行文本，系统将自动检测敏感词...',
+          text: this.inputText,
+          auto:true,
+          onSensitiveChangeCallback: (value: string) => {
+            this.inputText = value;
+            console.log(this.inputText);
 
-
+          },
+          onFocusCallback: () => {
+            console.log('输入框获得焦点');
+          },
+          onBlurCallback: () => {},
+          fontSize: 16,
+        }).width('80%').height(300)
 
       }.height('100%')
       .width('100%')

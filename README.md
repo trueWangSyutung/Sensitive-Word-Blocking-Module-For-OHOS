@@ -1,4 +1,3 @@
-```markdown
 # 敏感词检测输入框组件
 
 一个专为鸿蒙OS Next研发的敏感词检测输入框组件。A sensitive word detection TextInput component developed specifically for HarmonyOS Next.
@@ -16,7 +15,7 @@
 - 📱 **HarmonyOS优化** - 专为鸿蒙OS Next设计，完美适配ArkTS
 - 🔧 **易于使用** - 简单的API设计，支持链式调用
 - 📦 **轻量级** - 无外部依赖，包体积小
-- 🎨 **TypeScript** - 完整的类型支持，开发体验更佳
+- 📏 **自动扩展** - 支持自动扩展大小的多行文本输入框
 
 ## 📦 安装 / Installation
 
@@ -71,6 +70,41 @@ fontSize: 16,
 }
 }
 ```
+### 多行文本输入框 / Multi-line Text Input
+
+```
+typescript
+import { SensitiveMultiLineTextInput, SensitiveWordMode } from "sensitiveinput"
+
+@Entry
+@Component
+struct Example {
+@State inputText: string = '';
+
+build() {
+Column() {
+SensitiveMultiLineTextInput({
+mode: SensitiveWordMode.DEFAULT,
+placeholder: '请输入多行文本...',
+text: this.inputText,
+auto: true, // 启用自动扩展大小
+onSensitiveChangeCallback: (value: string) => {
+this.inputText = value;
+},
+onFocusCallback: () => {
+console.log('输入框获得焦点');
+},
+onBlurCallback: () => {
+console.log('输入框失去焦点');
+},
+fontSize: 16,
+})
+.width('80%')
+.height(100)
+}
+}
+}
+```
 ## 🔧 API 文档 / API Documentation
 
 ### SensitiveTextInput 组件
@@ -83,6 +117,23 @@ interface SensitiveTextInputOption {
 mode: SensitiveWordMode;          // 敏感词检测模式
 placeholder: string;              // 输入框提示文本
 text: string;                     // 输入框初始文本
+fontSize: number;                 // 字体大小
+onSensitiveChangeCallback: (value: string) => void;  // 文本变化回调函数
+onFocusCallback: () => void;      // 获得焦点回调函数
+onBlurCallback: () => void;       // 失去焦点回调函数
+}
+```
+### SensitiveMultiLineTextInput 组件
+
+#### 构造函数参数 / Constructor Parameters
+
+```
+typescript
+interface SensitiveTextInputOption {
+mode: SensitiveWordMode;          // 敏感词检测模式
+placeholder: string;              // 输入框提示文本
+text: string;                     // 输入框初始文本
+auto: boolean;                    // 是否启用自动扩展大小
 fontSize: number;                 // 字体大小
 onSensitiveChangeCallback: (value: string) => void;  // 文本变化回调函数
 onFocusCallback: () => void;      // 获得焦点回调函数
@@ -159,12 +210,13 @@ border(options: { width?: number, color?: string, radius?: number }): SensitiveT
 ```
 typescript
 // 在ArkTS文件中使用
-import { SensitiveTextInput, SensitiveWordMode } from "sensitiveinput"
+import { SensitiveTextInput, SensitiveMultiLineTextInput, SensitiveWordMode } from "sensitiveinput"
 
 @Entry
 @Component
 struct HomePage {
 @State inputText: string = '';
+@State multiLineText: string = '';
 @State message: string = '敏感词检测输入框演示';
 
 build() {
@@ -174,6 +226,7 @@ Text(this.message)
 .fontWeight(FontWeight.Bold)
 .margin({ top: 50, bottom: 30 })
 
+      // 单行输入框
       SensitiveTextInput({
         mode: SensitiveWordMode.STRICT,
         placeholder: '请输入文本，系统将自动检测敏感词...',
@@ -193,6 +246,29 @@ Text(this.message)
       .width('80%')
       .height(40)
       .border({ width: 1, color: '#ccc', radius: 4 })
+      
+      // 多行输入框（自动扩展大小）
+      SensitiveMultiLineTextInput({
+        mode: SensitiveWordMode.STRICT,
+        placeholder: '请输入多行文本，支持自动扩展大小...',
+        text: this.multiLineText,
+        auto: true, // 启用自动扩展
+        onSensitiveChangeCallback: (value: string) => {
+          this.multiLineText = value;
+          console.log('多行输入文本:', value);
+        },
+        onFocusCallback: () => {
+          console.log('多行输入框获得焦点');
+        },
+        onBlurCallback: () => {
+          console.log('多行输入框失去焦点');
+        },
+        fontSize: 16,
+      })
+      .width('80%')
+      .height(100)
+      .border({ width: 1, color: '#ccc', radius: 4 })
+      .margin({ top: 20 })
     }
     .height('100%')
     .width('100%')
@@ -255,7 +331,32 @@ color: '#409EFF',
 radius: 8
 })
 ```
-### 3. 敏感词处理 / Sensitive Word Processing
+### 3. 多行文本输入框（自动扩展） / Multi-line Text Input (Auto-expanding)
+
+```
+typescript
+SensitiveMultiLineTextInput({
+mode: SensitiveWordMode.MEDIUM,
+placeholder: '请输入多行文本...',
+text: this.multiLineText,
+auto: true, // 启用自动扩展大小
+onSensitiveChangeCallback: (value: string) => {
+this.multiLineText = value;
+},
+onFocusCallback: () => {},
+onBlurCallback: () => {},
+fontSize: 16,
+})
+.width('90%')
+.height(120)
+.fontSize(18)
+.border({
+width: 2,
+color: '#409EFF',
+radius: 8
+})
+```
+### 4. 敏感词处理 / Sensitive Word Processing
 
 当用户输入包含敏感词的文本时，组件会自动：
 1. 检测到敏感词
@@ -316,6 +417,13 @@ fontSize: 16,
 }
 }
 ```
+### 自动扩展大小功能 / Auto-expanding Feature
+
+`SensitiveMultiLineTextInput` 组件支持 `auto` 参数来启用自动扩展大小功能：
+
+- 当 `auto: true` 时，输入框会根据内容自动调整高度
+- 当 `auto: false` 时，输入框保持固定高度，内容可滚动
+
 ## 🤝 贡献 / Contributing
 
 欢迎提交 Issue 和 Pull Request！
