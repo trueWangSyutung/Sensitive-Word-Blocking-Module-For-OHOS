@@ -61,7 +61,6 @@ export function mode2list (mode: SensitiveWordMode) {
         "policy",
         "more",
         "url",
-        "other",
         "covid",
         "corruption",
         "net"
