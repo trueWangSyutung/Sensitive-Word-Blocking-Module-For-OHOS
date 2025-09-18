@@ -1,8 +1,7 @@
 {
   "name": "@syutung/sensitiveinput",
   "version": "0.0.1",
-  "description": "Please describe the basic information.",
-  "main": "Index.ets",
+  "description": "一个专为鸿蒙OS Next研发的敏感词检测输入框组件。A sensitive word detection TextInput component developed specifically for HarmonyOS Next.",  "main": "Index.ets",
   "author": "syutung",
   "license": "MIT",
   "packageType": "InterfaceHar",
