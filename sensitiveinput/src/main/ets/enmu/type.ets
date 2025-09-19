@@ -22,32 +22,30 @@ export function mode2list (mode: SensitiveWordMode) {
         "gun",
         "sex",
         "ads",
-        "reactionary",
         "violent",
+        "url",
       ];
     case SensitiveWordMode.MEDIUM:
       return [
-        "livelihood",
         "gun",
         "sex",
         "ads",
-        "reactionary",
-        "violent",
-        "policy",
-        "more",
         "url",
+        "violent",
+        "reactionary",
+        "policy",
       ];
     case SensitiveWordMode.STRICT:
       return [
-        "livelihood",
         "gun",
         "sex",
         "ads",
-        "reactionary",
-        "violent",
-        "policy",
-        "more",
         "url",
+        "violent",
+        "reactionary",
+        "policy",
+        "livelihood",
+        "more",
         "covid",
       ]
   }
