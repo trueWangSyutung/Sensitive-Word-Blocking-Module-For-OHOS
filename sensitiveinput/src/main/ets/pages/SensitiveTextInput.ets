@@ -162,7 +162,11 @@ export struct SensitiveTextInput {
               if (this.onFocusCallback) {
                 this.onFocusCallback();
               }
-            })
+            }).onCopy( (value: string) => {
+            return this.displayText;
+          }).onCut( (value: string) => {
+            return this.displayText;
+          })
             .onBlur(() => {
               if (this.onBlurCallback) {
                 this.onBlurCallback();
@@ -187,7 +191,11 @@ export struct SensitiveTextInput {
                   this.isProcessingChange = false;
                 }, 0);
               }
-            })
+            }).onCopy( (value: string) => {
+            return this.displayText;
+          }).onCut( (value: string) => {
+            return this.displayText;
+          })
             .onFocus(() => {
               if (this.onFocusCallback) {
                 this.onFocusCallback();
@@ -217,7 +225,11 @@ export struct SensitiveTextInput {
                 this.isProcessingChange = false;
               }, 0);
             }
-          })
+          }).onCopy( (value: string) => {
+            return this.displayText;
+        }).onCut( (value: string) => {
+          return this.displayText;
+        })
           .onFocus(() => {
             if (this.onFocusCallback) {
               this.onFocusCallback();

@@ -1,4 +1,7 @@
 # 更新日志
+## [0.0.4-rc1] - 2025-09-19
+- 修复 复制、粘贴 情况下 内容仍然是 原来的内容
+
 ## [0.0.4] - 2025-09-19
 - 将 SensitiveMultiLineTextInput 合并到 SensitiveTextInput 组件中
 - 增加自定义敏感词配置
