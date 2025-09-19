@@ -4,5 +4,5 @@ export { SensitiveTextInput }
 
 
 export {
-  SensitiveWordMode
+  SensitiveWordMode,ReplaceMode
 } from './src/main/ets/enmu/type';

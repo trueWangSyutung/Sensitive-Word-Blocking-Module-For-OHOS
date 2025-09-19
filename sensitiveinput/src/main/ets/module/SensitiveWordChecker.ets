@@ -3,8 +3,9 @@ import util from '@ohos.util';
 import { HashMap, List } from '@kit.ArkTS';
 import jsonData from "../../resources/rawfile/vocabulary.json"
 import {
-  mode2list, SensitiveWordMode
+  mode2list, ReplaceMode, SensitiveWordMode
 } from "../enmu/type"
+import PinyinConverter from '@nutpi/pinyin';
 
 export interface ReplaceResult {
   content: string;
@@ -33,6 +34,7 @@ export interface Vocabulary {
 export class SensitiveWordChecker {
   private root: TrieNode = new TrieNode();
   private types: Array<string> = [];
+  private converter = new PinyinConverter();
 
   constructor(
     mode : SensitiveWordMode
@@ -227,7 +229,7 @@ export class SensitiveWordChecker {
    * @param replacement 替换字符，默认为'*'
    * @returns 处理后的文本
    */
-  public replaceSensitiveWords(text: string, replacement: string = '*'): ReplaceResult {
+  public replaceSensitiveWords(text: string, replacement: string = '*',replaceMode:ReplaceMode): ReplaceResult {
     let result = text;
     let offset = 0;
     let words : Set<string> =  new Set();
@@ -238,9 +240,22 @@ export class SensitiveWordChecker {
         // 计算替换位置（考虑之前替换造成的位置偏移）
         const actualStartPos = i + offset;
         const actualEndPos = actualStartPos + resultWord.word.length;
+        let replacementStr = "";
 
         // 创建替换字符串
-        const replacementStr = replacement.repeat(resultWord.word.length);
+        if (replaceMode == ReplaceMode.SYMBOLS) {
+          if (replacement.length > 1) {
+            replacementStr = replacement;
+          } else {
+            replacementStr = replacement.repeat(resultWord.word.length)
+          }
+        } else if (replaceMode == ReplaceMode.PINYIN) {
+          let res  = this.converter.convert(resultWord.word);
+          // 提取 拼音中的 大写字母
+          res = res.replace(/[a-z]/g, "");
+          res = res.replace(/[0-9]/g, "");
+          replacementStr = res;
+        }
         words.add(result.substring(
           actualStartPos,
           actualEndPos

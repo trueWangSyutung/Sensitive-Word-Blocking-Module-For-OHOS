@@ -16,22 +16,21 @@
 - 🔧 **易于使用** - 简单的API设计，支持链式调用
 - 📦 **轻量级** - 无外部依赖，包体积小
 - 📏 **自动扩展** - 支持自动扩展大小的多行文本输入框
+- 🔄 **多种替换模式** - 支持符号、拼音、自定义字符串等多种替换模式
 
 ## 📦 安装 / Installation
 
 在项目中添加依赖：
 
-```
-json
-{
-"dependencies": {
-"@syutung/sensitiveinput": "@syutung/sensitiveinput:last"
-}
+```json
+   {
+   "dependencies": {
+       "@syutung/sensitiveinput": "@syutung/sensitiveinput:last"
+   }
 }
 ```
 然后运行：
-```
-bash
+```bash
 ohpm install
 ```
 ## 🚀 快速开始 / Quick Start
@@ -39,89 +38,88 @@ ohpm install
 ### 基础用法 / Basic Usage
 
 ```typescript
-
-import { SensitiveTextInput, SensitiveWordMode } from "sensitiveinput"
+import { SensitiveTextInput, SensitiveWordMode, ReplaceMode } from "sensitiveinput"
 
 SensitiveTextInput({
-          option:{
-            modeValue: SensitiveWordMode.DEFAULT,
-            placeholderValue: '请输入文本，系统将自动检测敏感词...',
-            textValue: this.inputText,
-            multlineValue:false,
-            autoValue : false, // 当且仅当 multilineValue为true时生效
-            warningValue: "发现敏感词",
-            onSensitiveChangeCallback: (value: string) => {
-              this.inputText = value;
-              console.log(this.inputText);
-
-            },
-            onFocusFunction: () => {
-              console.log('输入框获得焦点');
-            },
-            onBlurFunction: () => {},
-            fontSizeValue: 16,
-          }
-        }).width('80%')
+option:{
+modeValue: SensitiveWordMode.DEFAULT,
+replaceMode: ReplaceMode.SYMBOLS, // 敏感词替换模式
+placeholderValue: '请输入文本，系统将自动检测敏感词...',
+textValue: this.inputText,
+multlineValue:false,
+autoValue : false, // 当且仅当 multilineValue为true时生效
+warningValue: "发现敏感词",
+onSensitiveChangeCallback: (value: string) => {
+this.inputText = value;
+console.log(this.inputText);
+},
+onFocusFunction: () => {
+console.log('输入框获得焦点');
+},
+onBlurFunction: () => {},
+fontSizeValue: 16,
+}
+}).width('80%')
 ```
-
 ### 多行文本输入框 / Multi-line Text Input
 
 ```typescript
-
-import { SensitiveTextInput, SensitiveWordMode } from "sensitiveinput"
+import { SensitiveTextInput, SensitiveWordMode, ReplaceMode } from "sensitiveinput"
 
 SensitiveTextInput({
-          option:{
-            modeValue: SensitiveWordMode.DEFAULT,
-            placeholderValue: '请输入文本，系统将自动检测敏感词...',
-            textValue: this.inputText,
-            multlineValue:true,
-            autoValue : true,
-            warningValue: "发现敏感词",
-            onSensitiveChangeCallback: (value: string) => {
-              this.inputText = value;
-              console.log(this.inputText);
-
-            },
-            onFocusFunction: () => {
-              console.log('输入框获得焦点');
-            },
-            onBlurFunction: () => {},
-            fontSizeValue: 16,
-          }
-        }).width('80%')
+option:{
+modeValue: SensitiveWordMode.DEFAULT,
+replaceMode: ReplaceMode.SYMBOLS,
+placeholderValue: '请输入文本，系统将自动检测敏感词...',
+textValue: this.inputText,
+multlineValue:true,
+autoValue : true,
+warningValue: "发现敏感词",
+onSensitiveChangeCallback: (value: string) => {
+this.inputText = value;
+console.log(this.inputText);
+},
+onFocusFunction: () => {
+console.log('输入框获得焦点');
+},
+onBlurFunction: () => {},
+fontSizeValue: 16,
+}
+}).width('80%')
 ```
-
 ### 文本输入框 / Text Input With Customize sensitive words
 
 ```typescript
-import { SensitiveTextInput, SensitiveWordMode } from "sensitiveinput"
+import { SensitiveTextInput, SensitiveWordMode, ReplaceMode } from "sensitiveinput"
 import words from "../../resources/rawfile/words.json"
 import types from "../../resources/rawfile/types.json"
 // 加载自定义敏感词，放在 rawfile 文件夹中
-        
-SensitiveTextInput({
-   option:{
-      modeValue: SensitiveWordMode.DEFAULT,
-      placeholderValue: '请输入文本，系统将自动检测敏感词...',
-      textValue: this.inputText,
-      multlineValue:true,
-      autoValue : true,
-      warningValue: "发现敏感词",
-      onSensitiveChangeCallback: (value: string) => {
-         this.inputText = value;
-         console.log(this.inputText);
 
-      },
-      onFocusFunction: () => {
-         console.log('输入框获得焦点');
-      },
-      onBlurFunction: () => {},
-      fontSizeValue: 16,
-   }
+SensitiveTextInput({
+option:{
+modeValue: SensitiveWordMode.DEFAULT,
+replaceMode: ReplaceMode.SYMBOLS,
+placeholderValue: '请输入文本，系统将自动检测敏感词...',
+textValue: this.inputText,
+multlineValue:true,
+autoValue : true,
+warningValue: "发现敏感词",
+onSensitiveChangeCallback: (value: string) => {
+this.inputText = value;
+console.log(this.inputText);
+},
+onFocusFunction: () => {
+console.log('输入框获得焦点');
+},
+onBlurFunction: () => {},
+fontSizeValue: 16,
+customize: {
+types: types,
+sensitives: words
+}
+}
 }).width('80%')
 ```
-
 ## 🔧 API 文档 / API Documentation
 
 ### SensitiveTextInput 组件
@@ -129,27 +127,27 @@ SensitiveTextInput({
 #### 构造函数参数 / Constructor Parameters
 
 ```typescript
-
 interface SensitiveCustomize {
-types : string[] ,
-sensitives : Vocabulary[],
+types: string[],
+sensitives: Vocabulary[],
 }
 
 interface SensitiveTextInputOption{
-modeValue: SensitiveWordMode
-placeholderValue : string,
-textValue : string,
-fontSizeValue : number,
-multlineValue : boolean,
-warningValue: string,
-autoValue ?:boolean,
-onSensitiveChangeCallback : (value: string) => void,
-onFocusFunction : () => void,
-onBlurFunction : () => void,
-customize ?: SensitiveCustomize ,
+modeValue: SensitiveWordMode        // 敏感词检测模式
+replaceMode: ReplaceMode            // 敏感词替换模式
+replaceStr?: string                 // 自定义替换字符串（仅在ReplaceMode.CUSTOM时生效）
+placeholderValue: string            // 输入框提示文本
+textValue: string                   // 输入框初始文本
+fontSizeValue: number               // 字体大小
+multlineValue: boolean              // 是否为多行文本输入框
+warningValue: string                // 警告文本
+autoValue?: boolean                 // 是否启用自动扩展大小（仅在multilineValue为true时生效）
+onSensitiveChangeCallback: (value: string) => void  // 文本变化回调函数
+onFocusFunction?: () => void        // 获得焦点回调函数
+onBlurFunction?: () => void         // 失去焦点回调函数
+customize?: SensitiveCustomize      // 自定义敏感词配置
 }
 ```
-
 #### 敏感词检测模式 / Sensitive Word Detection Modes
 - 只在未启用自定义敏感词的模式下生效
 
@@ -193,7 +191,14 @@ enum SensitiveWordMode {
    - `"url"` (网址)
    - `"covid"` (疫情)
 
+#### 敏感词替换模式 / Sensitive Word Replacement Modes
 
+```typescript
+enum ReplaceMode {
+   SYMBOLS,   // 符号替换模式 - 用符号替换敏感词（默认为*）
+   PINYIN,    // 拼音替换模式 - 用拼音替换敏感词
+}
+```
 ### 在HarmonyOS应用中使用 / Usage in HarmonyOS App
 详情请见 example
 
@@ -204,44 +209,122 @@ enum SensitiveWordMode {
 ```typescript
 // 默认模式 - 适用于一般场景
 SensitiveTextInput({
-mode: SensitiveWordMode.DEFAULT,
-placeholder: '默认模式...',
-text: this.inputText,
-onSensitiveChangeCallback: (value: string) => {
-this.inputText = value;
-},
-onFocusCallback: () => {},
-onBlurCallback: () => {},
-fontSize: 16,
-})
+   option: {
+      modeValue: SensitiveWordMode.DEFAULT,
+      replaceMode: ReplaceMode.SYMBOLS,
+      placeholderValue: '默认模式...',
+      textValue: this.inputText,
+      multlineValue: false,
+      autoValue: false,
+      warningValue: "发现敏感词",
+      onSensitiveChangeCallback: (value: string) => {
+      this.inputText = value;
+      },
+      onFocusFunction: () => {},
+      onBlurFunction: () => {},
+      fontSizeValue: 16,
+   }
+}).width('80%')
 
 // 严格模式 - 适用于严格审核场景
 SensitiveTextInput({
-mode: SensitiveWordMode.STRICT,
-placeholder: '严格模式...',
-text: this.inputText,
+   option: {
+      modeValue: SensitiveWordMode.STRICT,
+      replaceMode: ReplaceMode.SYMBOLS,
+      placeholderValue: '严格模式...',
+      textValue: this.inputText,
+      multlineValue: false,
+      autoValue: false,
+      warningValue: "发现敏感词",
+      onSensitiveChangeCallback: (value: string) => {
+      this.inputText = value;
+      },
+      onFocusFunction: () => {},
+      onBlurFunction: () => {},
+      fontSizeValue: 16,
+   }
+}).width('80%')
+```
+### 2. 不同替换模式 / Different Replacement Modes
+
+```typescript
+// 符号替换模式（默认）
+SensitiveTextInput({
+option: {
+modeValue: SensitiveWordMode.DEFAULT,
+replaceMode: ReplaceMode.SYMBOLS,
+placeholderValue: '符号替换模式...',
+textValue: this.inputText,
+multlineValue: true,
+autoValue: true,
+warningValue: "发现敏感词",
 onSensitiveChangeCallback: (value: string) => {
 this.inputText = value;
 },
-onFocusCallback: () => {},
-onBlurCallback: () => {},
-fontSize: 16,
-})
-```
+onFocusFunction: () => {},
+onBlurFunction: () => {},
+fontSizeValue: 16,
+}
+}).width('80%')
 
-### 2. 自定义样式 / Custom Styling
+// 拼音替换模式
+SensitiveTextInput({
+option: {
+modeValue: SensitiveWordMode.DEFAULT,
+replaceMode: ReplaceMode.PINYIN,
+placeholderValue: '拼音替换模式...',
+textValue: this.inputText,
+multlineValue: true,
+autoValue: true,
+warningValue: "发现敏感词",
+onSensitiveChangeCallback: (value: string) => {
+this.inputText = value;
+},
+onFocusFunction: () => {},
+onBlurFunction: () => {},
+fontSizeValue: 16,
+}
+}).width('80%')
+
+// 自定义字符串替换模式
+SensitiveTextInput({
+option: {
+modeValue: SensitiveWordMode.DEFAULT,
+replaceMode: ReplaceMode.SYMBOLS,
+replaceStr: "(敏感词)",
+placeholderValue: '自定义字符串替换模式...',
+textValue: this.inputText,
+multlineValue: true,
+autoValue: true,
+warningValue: "发现敏感词",
+onSensitiveChangeCallback: (value: string) => {
+this.inputText = value;
+},
+onFocusFunction: () => {},
+onBlurFunction: () => {},
+fontSizeValue: 16,
+}
+}).width('80%')
+```
+### 3. 自定义样式 / Custom Styling
 
 ```typescript
 SensitiveTextInput({
-mode: SensitiveWordMode.MEDIUM,
-placeholder: '请输入文本...',
-text: this.inputText,
+option: {
+modeValue: SensitiveWordMode.MEDIUM,
+replaceMode: ReplaceMode.SYMBOLS,
+placeholderValue: '请输入文本...',
+textValue: this.inputText,
+multlineValue: false,
+autoValue: false,
+warningValue: "发现敏感词",
 onSensitiveChangeCallback: (value: string) => {
 this.inputText = value;
 },
-onFocusCallback: () => {},
-onBlurCallback: () => {},
-fontSize: 16,
+onFocusFunction: () => {},
+onBlurFunction: () => {},
+fontSizeValue: 16,
+}
 })
 .width(300)
 .height(50)
@@ -252,17 +335,18 @@ color: '#409EFF',
 radius: 8
 })
 ```
-
 ### 4. 敏感词处理 / Sensitive Word Processing
 
 当用户输入包含敏感词的文本时，组件会自动：
 1. 检测到敏感词
-2. 将敏感词替换为星号(*)显示
+2. 根据设置的替换模式替换敏感词
 3. 在输入框下方显示敏感词提示
 
 例如：
 - 输入：`这是一段包含打人内容的文本`
-- 显示：`这是一段包含**内容的文本`
+- 显示（符号替换）：`这是一段包含**内容的文本`
+- 显示（拼音替换）：`这是一段包含DR内容的文本`
+- 显示（符号替换）：`这是一段包含(敏感词)内容的文本`
 - 提示：`发现敏感词: 打人`
 
 ## 🧪 敏感词数据 / Sensitive Word Data
@@ -271,7 +355,6 @@ radius: 8
 
 ### 敏感词类型
 - 民生类 (livelihood)
-- 腾讯敏感词相关 (tencent)
 - 枪支类 (gun)
 - 色情类 (sex)
 - 广告类 (ads)
@@ -280,10 +363,7 @@ radius: 8
 - 政策类 (policy)
 - 其他类 (more)
 - 网址类 (url)
-- 其他 (other)
 - 疫情类 (covid)
-- 腐败类 (corruption)
-- 网易敏感词相关 (net)
 
 敏感词数据持续更新，确保覆盖最新的敏感内容。
 
@@ -291,27 +371,27 @@ radius: 8
 
 ### 自动扩展大小功能 / Auto-expanding Feature
 
-`SensitiveMultiLineTextInput` 组件支持 `auto` 参数来启用自动扩展大小功能：
+`SensitiveTextInput` 组件支持 `autoValue` 参数来启用自动扩展大小功能：
 
-- 当 `auto: true` 时，输入框会根据内容自动调整高度
-- 当 `auto: false` 时，输入框保持固定高度，内容可滚动
+- 当 `autoValue: true` 且 `multlineValue: true` 时，输入框会根据内容自动调整高度
+- 当 `autoValue: false` 或 `multlineValue: false` 时，输入框保持固定高度，内容可滚动
 
 ### 自定义敏感词 / Customize sensitive words
 `SensitiveTextInput` 组件支持 `customize` 参数来自定义敏感词：
-自定义敏感词 通常 位于 `resources/rawfile/*.json` 文件中,
+自定义敏感词 通常 位于 [resources/rawfile/*.json](file:///Users/wxd2zrx/DevEcoStudioProjects/SensitiveWordBlockingDemo/entry/src/main/resources/rawfile/types.json) 文件中,
 *.json 文件格式为：
 ```json
 [
    {
-      "types": "typeName1",
-      "words" : [
-         "word1", "word2", "..." , "wordN"
+      "type": "typeName1",
+      "words": [
+         "word1", "word2", "...", "wordN"
       ]
    },
    {
-      "types": "typeName2",
-      "words" : [
-         "word1", "word2", "..." , "wordN"
+      "type": "typeName2",
+      "words": [
+         "word1", "word2", "...", "wordN"
       ]
    }
 ]
@@ -319,11 +399,18 @@ radius: 8
 同时需要一个 types 文件，用于指定敏感词类型，格式为：
 ```json
 [
-   "typeName1", "typeName2"
+"typeName1", "typeName2"
 ]
 ```
-这个可以直接放在 `resources/rawfile/types.json` 文件中，也可以直接传入 string 数组。
+这个可以直接放在 [resources/rawfile/types.json](file:///Users/wxd2zrx/DevEcoStudioProjects/SensitiveWordBlockingDemo/entry/src/main/resources/rawfile/types.json) 文件中，也可以直接传入 string 数组。
 
+### 多种替换模式 / Multiple Replacement Modes
+
+组件支持三种敏感词替换模式：
+
+1. **符号替换模式 (SYMBOLS)** - 将敏感词替换为指定符号（默认为*）
+2. **拼音替换模式 (PINYIN)** - 将敏感词替换为拼音
+3. **自定义替换模式 (CUSTOM)** - 将敏感词替换为自定义字符串
 
 ## 🤝 贡献 / Contributing
 
@@ -351,3 +438,4 @@ radius: 8
 ## ⭐ 支持项目 / Support
 
 如果这个项目对您有帮助，请给它一个星标⭐！
+

@@ -1,11 +1,13 @@
-import { SensitiveWordMode } from '../enmu/type';
+import { ReplaceMode, SensitiveWordMode } from '../enmu/type';
 import { SensitiveWordChecker, Vocabulary } from '../module/SensitiveWordChecker'
 interface SensitiveCustomize {
   types : string[] ,
   sensitives : Vocabulary[],
 }
 interface SensitiveTextInputOption{
-  modeValue: SensitiveWordMode
+  modeValue: SensitiveWordMode,
+  replaceMode:ReplaceMode,
+  replaceStr ?: string,
   placeholderValue : string,
   textValue : string,
   fontSizeValue : number,
@@ -13,8 +15,8 @@ interface SensitiveTextInputOption{
   warningValue: string,
   autoValue ?:boolean,
   onSensitiveChangeCallback : (value: string) => void,
-  onFocusFunction : () => void,
-  onBlurFunction : () => void,
+  onFocusFunction ?: () => void,
+  onBlurFunction ?: () => void,
   customize ?: SensitiveCustomize ,
 }
 
@@ -26,11 +28,14 @@ export struct SensitiveTextInput {
   @State private isProcessingChange: boolean = false;
   @State private auto: boolean = false;
   @State private multiline: boolean = false;
-  @State private words: string[] = [];
   @State private warning : string = '存在敏感词！';
+  @State private replaceModel : ReplaceMode = ReplaceMode.SYMBOLS;
+  @State private replaceStr: string = '*';
   @State public  option : SensitiveTextInputOption = {
     modeValue: SensitiveWordMode.DEFAULT,
     placeholderValue: '',
+    replaceMode: ReplaceMode.SYMBOLS,
+    replaceStr: '*',
     textValue: '',
     fontSizeValue: 16,
     multlineValue: false,
@@ -48,6 +53,7 @@ export struct SensitiveTextInput {
   private placeholderStr: string = '';
   private fontSizeNum: number = 16;
   private onChangeCallback?: (value: string) => void;
+
   private onFocusCallback?: () => void;
   private onBlurCallback?: () => void;
 
@@ -74,13 +80,17 @@ export struct SensitiveTextInput {
     this.multiline = this.option.multlineValue;
     this.warning = this.option.warningValue;
 
+    this.replaceModel = this.option.replaceMode;
+    if (this.option.replaceStr){
+      this.replaceStr = this.option.replaceStr;
+    }
+
     // 检查敏感词
     if (this.option.customize){
       if (this.checker){
         this.checker.loadVocabularyByPath(this.option.customize.sensitives)
         this.checker.loadTypesByPath(this.option.customize.types)
       }
-
     }
 
   }
@@ -113,10 +123,10 @@ export struct SensitiveTextInput {
       if (this.checker) {
         let res = this.checker?.replaceSensitiveWords(
           value,
-          '*'
+          this.replaceStr,
+          this.replaceModel
         );
         this.displayText = res.content;
-        this.words = res.words;
 
       } else {
         this.displayText = "*" . repeat(
