@@ -38,116 +38,126 @@ ohpm install
 
 ### 基础用法 / Basic Usage
 
-```
-typescript
+```typescript
+
 import { SensitiveTextInput, SensitiveWordMode } from "sensitiveinput"
 
-@Entry
-@Component
-struct Example {
-@State inputText: string = '';
-
-build() {
-Column() {
 SensitiveTextInput({
-mode: SensitiveWordMode.DEFAULT,
-placeholder: '请输入文本...',
-text: this.inputText,
-onSensitiveChangeCallback: (value: string) => {
-this.inputText = value;
-},
-onFocusCallback: () => {
-console.log('输入框获得焦点');
-},
-onBlurCallback: () => {
-console.log('输入框失去焦点');
-},
-fontSize: 16,
-})
-.width('80%')
-.height(40)
-}
-}
-}
+          option:{
+            modeValue: SensitiveWordMode.DEFAULT,
+            placeholderValue: '请输入文本，系统将自动检测敏感词...',
+            textValue: this.inputText,
+            multlineValue:false,
+            autoValue : false, // 当且仅当 multilineValue为true时生效
+            warningValue: "发现敏感词",
+            onSensitiveChangeCallback: (value: string) => {
+              this.inputText = value;
+              console.log(this.inputText);
+
+            },
+            onFocusFunction: () => {
+              console.log('输入框获得焦点');
+            },
+            onBlurFunction: () => {},
+            fontSizeValue: 16,
+          }
+        }).width('80%')
 ```
+
 ### 多行文本输入框 / Multi-line Text Input
 
-```
-typescript
-import { SensitiveMultiLineTextInput, SensitiveWordMode } from "sensitiveinput"
+```typescript
 
-@Entry
-@Component
-struct Example {
-@State inputText: string = '';
+import { SensitiveTextInput, SensitiveWordMode } from "sensitiveinput"
 
-build() {
-Column() {
-SensitiveMultiLineTextInput({
-mode: SensitiveWordMode.DEFAULT,
-placeholder: '请输入多行文本...',
-text: this.inputText,
-auto: true, // 启用自动扩展大小
-onSensitiveChangeCallback: (value: string) => {
-this.inputText = value;
-},
-onFocusCallback: () => {
-console.log('输入框获得焦点');
-},
-onBlurCallback: () => {
-console.log('输入框失去焦点');
-},
-fontSize: 16,
-})
-.width('80%')
-.height(100)
-}
-}
-}
+SensitiveTextInput({
+          option:{
+            modeValue: SensitiveWordMode.DEFAULT,
+            placeholderValue: '请输入文本，系统将自动检测敏感词...',
+            textValue: this.inputText,
+            multlineValue:true,
+            autoValue : true,
+            warningValue: "发现敏感词",
+            onSensitiveChangeCallback: (value: string) => {
+              this.inputText = value;
+              console.log(this.inputText);
+
+            },
+            onFocusFunction: () => {
+              console.log('输入框获得焦点');
+            },
+            onBlurFunction: () => {},
+            fontSizeValue: 16,
+          }
+        }).width('80%')
 ```
+
+### 文本输入框 / Text Input With Customize sensitive words
+
+```typescript
+import { SensitiveTextInput, SensitiveWordMode } from "sensitiveinput"
+import words from "../../resources/rawfile/words.json"
+import types from "../../resources/rawfile/types.json"
+// 加载自定义敏感词，放在 rawfile 文件夹中
+        
+SensitiveTextInput({
+   option:{
+      modeValue: SensitiveWordMode.DEFAULT,
+      placeholderValue: '请输入文本，系统将自动检测敏感词...',
+      textValue: this.inputText,
+      multlineValue:true,
+      autoValue : true,
+      warningValue: "发现敏感词",
+      onSensitiveChangeCallback: (value: string) => {
+         this.inputText = value;
+         console.log(this.inputText);
+
+      },
+      onFocusFunction: () => {
+         console.log('输入框获得焦点');
+      },
+      onBlurFunction: () => {},
+      fontSizeValue: 16,
+   }
+}).width('80%')
+```
+
 ## 🔧 API 文档 / API Documentation
 
 ### SensitiveTextInput 组件
 
 #### 构造函数参数 / Constructor Parameters
 
-```
-typescript
-interface SensitiveTextInputOption {
-mode: SensitiveWordMode;          // 敏感词检测模式
-placeholder: string;              // 输入框提示文本
-text: string;                     // 输入框初始文本
-fontSize: number;                 // 字体大小
-onSensitiveChangeCallback: (value: string) => void;  // 文本变化回调函数
-onFocusCallback: () => void;      // 获得焦点回调函数
-onBlurCallback: () => void;       // 失去焦点回调函数
+```typescript
+
+interface SensitiveCustomize {
+types : string[] ,
+sensitives : Vocabulary[],
+}
+
+interface SensitiveTextInputOption{
+modeValue: SensitiveWordMode
+placeholderValue : string,
+textValue : string,
+fontSizeValue : number,
+multlineValue : boolean,
+warningValue: string,
+autoValue ?:boolean,
+onSensitiveChangeCallback : (value: string) => void,
+onFocusFunction : () => void,
+onBlurFunction : () => void,
+customize ?: SensitiveCustomize ,
 }
 ```
-### SensitiveMultiLineTextInput 组件
 
-#### 构造函数参数 / Constructor Parameters
-
-```
-typescript
-interface SensitiveTextInputOption {
-mode: SensitiveWordMode;          // 敏感词检测模式
-placeholder: string;              // 输入框提示文本
-text: string;                     // 输入框初始文本
-auto: boolean;                    // 是否启用自动扩展大小
-fontSize: number;                 // 字体大小
-onSensitiveChangeCallback: (value: string) => void;  // 文本变化回调函数
-onFocusCallback: () => void;      // 获得焦点回调函数
-onBlurCallback: () => void;       // 失去焦点回调函数
-}
-```
 #### 敏感词检测模式 / Sensitive Word Detection Modes
+- 只在未启用自定义敏感词的模式下生效
 
-```
-typescript
+```typescript
 enum SensitiveWordMode {
-DEFAULT,  // 默认模式 - 检测暴力、色情、广告等核心敏感词
-MEDIUM,   // 中等模式 - 检测更多类型的敏感词
-STRICT    // 严格模式 - 检测所有类型的敏感词
+   DEFAULT,  // 默认模式 - 检测暴力、色情、广告等核心敏感词
+   MEDIUM,   // 中等模式 - 检测更多类型的敏感词
+   STRICT    // 严格模式 - 检测所有类型的敏感词
 }
 ```
 各模式对应的敏感词类型：
@@ -169,13 +179,10 @@ STRICT    // 严格模式 - 检测所有类型的敏感词
    - `"policy"` (政策)
    - `"more"` (其他)
    - `"url"` (网址)
-   - `"other"` (其他)
    - `"covid"` (疫情)
-   - `"corruption"` (腐败)
 
 3. **STRICT 模式**:
    - `"livelihood"` (民生)
-   - `"tencent"` (腾讯敏感词相关)
    - `"gun"` (枪支)
    - `"sex"` (色情)
    - `"ads"` (广告)
@@ -184,103 +191,17 @@ STRICT    // 严格模式 - 检测所有类型的敏感词
    - `"policy"` (政策)
    - `"more"` (其他)
    - `"url"` (网址)
-   - `"other"` (其他)
    - `"covid"` (疫情)
-   - `"corruption"` (腐败)
-   - `"net"` (网易敏感词相关)
 
-#### 链式方法 / Chainable Methods
 
-```
-typescript
-// 设置宽度
-width(value: string | number): SensitiveTextInput
-
-// 设置高度
-height(value: string | number): SensitiveTextInput
-
-// 设置字体大小
-fontSize(value: number): SensitiveTextInput
-
-// 设置边框
-border(options: { width?: number, color?: string, radius?: number }): SensitiveTextInput
-```
 ### 在HarmonyOS应用中使用 / Usage in HarmonyOS App
+详情请见 example
 
-```
-typescript
-// 在ArkTS文件中使用
-import { SensitiveTextInput, SensitiveMultiLineTextInput, SensitiveWordMode } from "sensitiveinput"
-
-@Entry
-@Component
-struct HomePage {
-@State inputText: string = '';
-@State multiLineText: string = '';
-@State message: string = '敏感词检测输入框演示';
-
-build() {
-Column() {
-Text(this.message)
-.fontSize(24)
-.fontWeight(FontWeight.Bold)
-.margin({ top: 50, bottom: 30 })
-
-      // 单行输入框
-      SensitiveTextInput({
-        mode: SensitiveWordMode.STRICT,
-        placeholder: '请输入文本，系统将自动检测敏感词...',
-        text: this.inputText,
-        onSensitiveChangeCallback: (value: string) => {
-          this.inputText = value;
-          console.log('输入文本:', value);
-        },
-        onFocusCallback: () => {
-          console.log('输入框获得焦点');
-        },
-        onBlurCallback: () => {
-          console.log('输入框失去焦点');
-        },
-        fontSize: 16,
-      })
-      .width('80%')
-      .height(40)
-      .border({ width: 1, color: '#ccc', radius: 4 })
-      
-      // 多行输入框（自动扩展大小）
-      SensitiveMultiLineTextInput({
-        mode: SensitiveWordMode.STRICT,
-        placeholder: '请输入多行文本，支持自动扩展大小...',
-        text: this.multiLineText,
-        auto: true, // 启用自动扩展
-        onSensitiveChangeCallback: (value: string) => {
-          this.multiLineText = value;
-          console.log('多行输入文本:', value);
-        },
-        onFocusCallback: () => {
-          console.log('多行输入框获得焦点');
-        },
-        onBlurCallback: () => {
-          console.log('多行输入框失去焦点');
-        },
-        fontSize: 16,
-      })
-      .width('80%')
-      .height(100)
-      .border({ width: 1, color: '#ccc', radius: 4 })
-      .margin({ top: 20 })
-    }
-    .height('100%')
-    .width('100%')
-}
-}
-```
 ## 📝 使用示例 / Usage Examples
 
 ### 1. 不同检测模式 / Different Detection Modes
 
-```
-typescript
+```typescript
 // 默认模式 - 适用于一般场景
 SensitiveTextInput({
 mode: SensitiveWordMode.DEFAULT,
@@ -307,10 +228,10 @@ onBlurCallback: () => {},
 fontSize: 16,
 })
 ```
+
 ### 2. 自定义样式 / Custom Styling
 
-```
-typescript
+```typescript
 SensitiveTextInput({
 mode: SensitiveWordMode.MEDIUM,
 placeholder: '请输入文本...',
@@ -331,31 +252,7 @@ color: '#409EFF',
 radius: 8
 })
 ```
-### 3. 多行文本输入框（自动扩展） / Multi-line Text Input (Auto-expanding)
 
-```
-typescript
-SensitiveMultiLineTextInput({
-mode: SensitiveWordMode.MEDIUM,
-placeholder: '请输入多行文本...',
-text: this.multiLineText,
-auto: true, // 启用自动扩展大小
-onSensitiveChangeCallback: (value: string) => {
-this.multiLineText = value;
-},
-onFocusCallback: () => {},
-onBlurCallback: () => {},
-fontSize: 16,
-})
-.width('90%')
-.height(120)
-.fontSize(18)
-.border({
-width: 2,
-color: '#409EFF',
-radius: 8
-})
-```
 ### 4. 敏感词处理 / Sensitive Word Processing
 
 当用户输入包含敏感词的文本时，组件会自动：
@@ -392,37 +289,41 @@ radius: 8
 
 ## 🎯 高级配置 / Advanced Configuration
 
-### 性能优化建议
-
-```
-typescript
-// 对于复杂页面，建议将敏感词检测组件单独封装
-@Component
-struct MySensitiveInput {
-@State private text: string = '';
-@State private mode: SensitiveWordMode = SensitiveWordMode.MEDIUM;
-
-build() {
-SensitiveTextInput({
-mode: this.mode,
-placeholder: '请输入...',
-text: this.text,
-onSensitiveChangeCallback: (value: string) => {
-this.text = value;
-},
-onFocusCallback: () => {},
-onBlurCallback: () => {},
-fontSize: 16,
-})
-}
-}
-```
 ### 自动扩展大小功能 / Auto-expanding Feature
 
 `SensitiveMultiLineTextInput` 组件支持 `auto` 参数来启用自动扩展大小功能：
 
 - 当 `auto: true` 时，输入框会根据内容自动调整高度
 - 当 `auto: false` 时，输入框保持固定高度，内容可滚动
+
+### 自定义敏感词 / Customize sensitive words
+`SensitiveTextInput` 组件支持 `customize` 参数来自定义敏感词：
+自定义敏感词 通常 位于 `resources/rawfile/*.json` 文件中,
+*.json 文件格式为：
+```json
+[
+   {
+      "types": "typeName1",
+      "words" : [
+         "word1", "word2", "..." , "wordN"
+      ]
+   },
+   {
+      "types": "typeName2",
+      "words" : [
+         "word1", "word2", "..." , "wordN"
+      ]
+   }
+]
+```
+同时需要一个 types 文件，用于指定敏感词类型，格式为：
+```json
+[
+   "typeName1", "typeName2"
+]
+```
+这个可以直接放在 `resources/rawfile/types.json` 文件中，也可以直接传入 string 数组。
+
 
 ## 🤝 贡献 / Contributing
 

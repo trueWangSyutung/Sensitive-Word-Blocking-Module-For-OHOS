@@ -1,8 +1,15 @@
 # 更新日志
+## [0.0.4] - 2025-09-19
+- 将 SensitiveMultiLineTextInput 合并到 SensitiveTextInput 组件中
+- 增加自定义敏感词配置
+- 修复传递参数的问题
 
 ## [0.0.3] - 2025-09-18
 - 📏 新增多行文本输入框组件(SensitiveMultiLineTextInput)，支持自动扩展大小
 - 移除一些没必要的敏感词
+
+## [0.0.2] - 2025-09-18
+- 📏 新增多行文本输入框组件(SensitiveMultiLineTextInput)，支持自动扩展大小
 
 
 ## [0.0.1] - 2025-09-18

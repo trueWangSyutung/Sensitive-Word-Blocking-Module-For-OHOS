@@ -6,6 +6,10 @@ import {
   mode2list, SensitiveWordMode
 } from "../enmu/type"
 
+export interface ReplaceResult {
+  content: string;
+  words: string[];
+}
 /**
  * Trie树节点类
  */
@@ -20,10 +24,11 @@ interface GeneratedTypeLiteralInterface_3 {
   type: string;
 }
 
-interface GeneratedTypeLiteralInterface_2 {
-  word: string;
+export interface Vocabulary {
   type: string;
+  words: string[];
 }
+
 
 export class SensitiveWordChecker {
   private root: TrieNode = new TrieNode();
@@ -94,6 +99,32 @@ export class SensitiveWordChecker {
       console.info('SensitiveWordChecker: Vocabulary loaded');
     } catch (error) {
       console.error('Failed to load vocabulary:', error);
+    }
+  }
+
+  public loadVocabularyByPath(values: Vocabulary[]): void {
+    try {
+      // 构建Trie树
+      this.root = new TrieNode();
+      for (const category of values) {
+        this.buildTrie(category.words, category.type);
+      }
+      console.info('SensitiveWordChecker: Vocabulary loaded');
+    } catch (error) {
+      console.error('Failed to load vocabulary:', error);
+    }
+  }
+
+  public loadTypesByPath(types : string[]): void {
+    try {
+      // 读取 类型文件，从 rawFile
+      this.types = types;
+
+      // 注意：在实际应用中，需要使用正确的资源路径加载文件
+      // 这里暂时使用模拟数据
+      console.info('SensitiveWordChecker: Types loaded');
+    } catch (error) {
+      console.error('Failed to load types:', error);
     }
   }
 
@@ -196,10 +227,10 @@ export class SensitiveWordChecker {
    * @param replacement 替换字符，默认为'*'
    * @returns 处理后的文本
    */
-  public replaceSensitiveWords(text: string, replacement: string = '*'): string {
+  public replaceSensitiveWords(text: string, replacement: string = '*'): ReplaceResult {
     let result = text;
     let offset = 0;
-
+    let words : Set<string> =  new Set();
     // 从文本的每个位置开始查找
     for (let i = 0; i < result.length; i++) {
       const resultWord = this.extractFromPosition(result, i);
@@ -210,6 +241,10 @@ export class SensitiveWordChecker {
 
         // 创建替换字符串
         const replacementStr = replacement.repeat(resultWord.word.length);
+        words.add(result.substring(
+          actualStartPos,
+          actualEndPos
+        ))
 
         // 执行替换
         result = result.substring(0, actualStartPos) +
@@ -218,13 +253,16 @@ export class SensitiveWordChecker {
 
         // 更新偏移量
         offset += replacementStr.length - resultWord.word.length;
-
         // 跳过已处理的部分
         i += resultWord.word.length - 1;
       }
     }
 
-    return result;
+
+    return {
+      content: result,
+      words: Array.from(words)
+    };
   }
 
   /**
