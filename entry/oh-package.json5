@@ -7,7 +7,6 @@
   "license": "",
   "dependencies": {
     "@syutung/sensitiveinput": "file:../sensitiveinput",
-
   }
 }
 

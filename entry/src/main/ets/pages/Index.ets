@@ -2,6 +2,7 @@ import { ReplaceMode, SensitiveTextInput, SensitiveWordMode} from "@syutung/sens
 import words from "../../resources/rawfile/words.json"
 import types from "../../resources/rawfile/types.json"
 
+
 @Entry
 @Component
 struct Index {
@@ -10,141 +11,138 @@ struct Index {
 
   build() {
     RelativeContainer() {
-      Column(){
-        Text(this.message)
-          .id('title')
-          .fontSize($r('app.float.page_text_font_size'))
-          .fontWeight(FontWeight.Bold)
-          .alignRules({
-            top: { anchor: '__container__', align: VerticalAlign.Top },
-            middle: { anchor: '__container__', align: HorizontalAlign.Center }
-          })
-          .margin({ top: 50 })
-          .onClick(() => {
-            this.message = 'Welcome';
-          })
+      Tabs() {
+        TabContent(){
+          Scroll(){
+            Column(){
+              Text('单行文本输入框')
+              SensitiveTextInput({
+                option:{
+                  modeValue: SensitiveWordMode.DEFAULT,
+                  replaceMode:ReplaceMode.SYMBOLS,
+                  placeholderValue: '请输入文本，系统将自动检测敏感词...',
+                  textValue: this.inputText,
+                  multlineValue:false,
+                  autoValue : false,
+                  warningValue: "发现敏感词",
+                  onSensitiveChangeCallback: (value: string) => {
+                    this.inputText = value;
+                    console.log(this.inputText);
 
-        Text('单行文本输入框')
-        SensitiveTextInput({
-          option:{
-            modeValue: SensitiveWordMode.DEFAULT,
-            replaceMode:ReplaceMode.SYMBOLS,
-            placeholderValue: '请输入文本，系统将自动检测敏感词...',
-            textValue: this.inputText,
-            multlineValue:false,
-            autoValue : false,
-            warningValue: "发现敏感词",
-            onSensitiveChangeCallback: (value: string) => {
-              this.inputText = value;
-              console.log(this.inputText);
+                  },
+                  onFocusFunction: () => {
+                    console.log('输入框获得焦点');
+                  },
+                  onBlurFunction: () => {},
+                  fontSizeValue: 16,
+                }
+              }).width('80%')
 
-            },
-            onFocusFunction: () => {
-              console.log('输入框获得焦点');
-            },
-            onBlurFunction: () => {},
-            fontSizeValue: 16,
-          }
-        }).width('80%')
+              Text('多行文本输入框')
+              SensitiveTextInput({
+                option:{
+                  modeValue: SensitiveWordMode.DEFAULT,
+                  replaceMode:ReplaceMode.SYMBOLS,
 
-        Text('多行文本输入框')
-        SensitiveTextInput({
-          option:{
-            modeValue: SensitiveWordMode.DEFAULT,
-            replaceMode:ReplaceMode.SYMBOLS,
+                  placeholderValue: '请输入文本，系统将自动检测敏感词...',
+                  textValue: this.inputText,
+                  multlineValue:true,
+                  autoValue : true,
+                  warningValue: "发现敏感词",
+                  onSensitiveChangeCallback: (value: string) => {
+                    this.inputText = value;
+                    console.log(this.inputText);
 
-            placeholderValue: '请输入文本，系统将自动检测敏感词...',
-            textValue: this.inputText,
-            multlineValue:true,
-            autoValue : true,
-            warningValue: "发现敏感词",
-            onSensitiveChangeCallback: (value: string) => {
-              this.inputText = value;
-              console.log(this.inputText);
+                  },
+                  onFocusFunction: () => {
+                    console.log('输入框获得焦点');
+                  },
+                  onBlurFunction: () => {},
+                  fontSizeValue: 16,
+                }
+              })
 
-            },
-            onFocusFunction: () => {
-              console.log('输入框获得焦点');
-            },
-            onBlurFunction: () => {},
-            fontSizeValue: 16,
-          }
-        }).width('80%')
+                .width('80%')
 
-        Text('多行文本输入框·自定义敏感词')
-        SensitiveTextInput({
-          option:{
-            modeValue: SensitiveWordMode.DEFAULT,
-            placeholderValue: '请输入文本，系统将自动检测敏感词...',
-            textValue: this.inputText,
-            replaceMode:ReplaceMode.SYMBOLS,
-            multlineValue:true,
-            autoValue : true,
-            warningValue: "发现敏感词",
-            onSensitiveChangeCallback: (value: string) => {
-              this.inputText = value;
-              console.log(this.inputText);
+              Text('多行文本输入框·自定义敏感词')
+              SensitiveTextInput({
+                option:{
+                  modeValue: SensitiveWordMode.DEFAULT,
+                  placeholderValue: '请输入文本，系统将自动检测敏感词...',
+                  textValue: this.inputText,
+                  replaceMode:ReplaceMode.SYMBOLS,
+                  multlineValue:true,
+                  autoValue : true,
+                  warningValue: "发现敏感词",
+                  onSensitiveChangeCallback: (value: string) => {
+                    this.inputText = value;
+                    console.log(this.inputText);
 
-            },
-            onFocusFunction: () => {
-              console.log('输入框获得焦点');
-            },
-            onBlurFunction: () => {},
-            fontSizeValue: 16,
-            customize:{
-              types:types,
-              sensitives:words
-            }
-          }
-        }).width('80%')
+                  },
+                  onFocusFunction: () => {
+                    console.log('输入框获得焦点');
+                  },
+                  onBlurFunction: () => {},
+                  fontSizeValue: 16,
+                  customize:{
+                    types:types,
+                    sensitives:words
+                  }
+                }
+              }).width('80%')
 
-        Text('多行文本输入框·替换为自定义字符串')
-        SensitiveTextInput({
-          option:{
-            modeValue: SensitiveWordMode.DEFAULT,
-            replaceMode:ReplaceMode.SYMBOLS,
-            replaceStr:"(敏感内容)",
-            placeholderValue: '请输入文本，系统将自动检测敏感词...',
-            textValue: this.inputText,
-            multlineValue:true,
-            autoValue : true,
-            warningValue: "发现敏感词",
-            onSensitiveChangeCallback: (value: string) => {
-              this.inputText = value;
-              console.log(this.inputText);
+              Text('多行文本输入框·替换为自定义字符串')
+              SensitiveTextInput({
+                option:{
+                  modeValue: SensitiveWordMode.DEFAULT,
+                  replaceMode:ReplaceMode.SYMBOLS,
+                  replaceStr:"(敏感内容)",
+                  placeholderValue: '请输入文本，系统将自动检测敏感词...',
+                  textValue: this.inputText,
+                  multlineValue:true,
+                  autoValue : true,
+                  warningValue: "发现敏感词",
+                  onSensitiveChangeCallback: (value: string) => {
+                    this.inputText = value;
+                    console.log(this.inputText);
 
-            },
-            onFocusFunction: () => {
-              console.log('输入框获得焦点');
-            },
-            onBlurFunction: () => {},
-            fontSizeValue: 16,
-          }
-        }).width('80%')
+                  },
+                  onFocusFunction: () => {
+                    console.log('输入框获得焦点');
+                  },
+                  onBlurFunction: () => {},
+                  fontSizeValue: 16,
+                }
+              }).width('80%')
 
-        Text('多行文本输入框·替换为拼音')
-        SensitiveTextInput({
-          option:{
-            modeValue: SensitiveWordMode.DEFAULT,
-            replaceMode:ReplaceMode.PINYIN,
-            placeholderValue: '请输入文本，系统将自动检测敏感词...',
-            textValue: this.inputText,
-            multlineValue:true,
-            autoValue : true,
-            warningValue: "发现敏感词",
-            onSensitiveChangeCallback: (value: string) => {
-              this.inputText = value;
-              console.log(this.inputText);
+              Text('多行文本输入框·替换为拼音')
+              SensitiveTextInput({
+                option:{
+                  modeValue: SensitiveWordMode.DEFAULT,
+                  replaceMode:ReplaceMode.PINYIN,
+                  placeholderValue: '请输入文本，系统将自动检测敏感词...',
+                  textValue: this.inputText,
+                  multlineValue:true,
+                  autoValue : true,
+                  warningValue: "发现敏感词",
+                  onSensitiveChangeCallback: (value: string) => {
+                    this.inputText = value;
+                    console.log(this.inputText);
 
-            },
-            onFocusFunction: () => {
-              console.log('输入框获得焦点');
-            },
-            onBlurFunction: () => {},
-            fontSizeValue: 16,
-          }
-        }).width('80%')
-
+                  },
+                  onFocusFunction: () => {
+                    console.log('输入框获得焦点');
+                  },
+                  onBlurFunction: () => {},
+                  fontSizeValue: 16,
+                }
+              }).width('80%')
+            }.height('100%')
+            .width('100%')
+          }.height('100%')
+          .width('100%').scrollable(ScrollDirection.Vertical)
+        }.height('100%')
+        .width('100%').tabBar("内容安全输入框测试")
 
       }.height('100%')
       .width('100%')

@@ -31,7 +31,7 @@ export struct SensitiveTextInput {
   @State private warning : string = '存在敏感词！';
   @State private replaceModel : ReplaceMode = ReplaceMode.SYMBOLS;
   @State private replaceStr: string = '*';
-  @State public  option : SensitiveTextInputOption = {
+  @State  public  option : SensitiveTextInputOption = {
     modeValue: SensitiveWordMode.DEFAULT,
     placeholderValue: '',
     replaceMode: ReplaceMode.SYMBOLS,
@@ -48,6 +48,8 @@ export struct SensitiveTextInput {
     onBlurFunction: () => {
     },
   };
+
+
 
   private mode : SensitiveWordMode = SensitiveWordMode.DEFAULT;
   private placeholderStr: string = '';
@@ -94,6 +96,7 @@ export struct SensitiveTextInput {
     }
 
   }
+
 
   aboutToAppear(): void {
     // 初始化时检查敏感词
